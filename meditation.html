@@ -25,28 +25,9 @@
     </section>
 
     <script>
-        const diseases = [
-            { 
-                name: "Anxiety", 
-                advice: "Practice deep breathing exercises and mindfulness. Try meditation for 10 minutes daily.",
-                meditation: "Sit in a quiet place, close your eyes, and focus on your breath. Inhale for 4 seconds, hold for 4 seconds, exhale for 4 seconds."
-            },
-            { 
-                name: "High Blood Pressure", 
-                advice: "Avoid stress and practice yoga or guided meditation.",
-                meditation: "Try progressive muscle relaxation. Slowly tense and relax each muscle group in your body."
-            },
-            { 
-                name: "Insomnia", 
-                advice: "Follow a relaxing bedtime routine. Avoid screens before sleep.",
-                meditation: "Lie down, close your eyes, and visualize a peaceful place like a beach or forest."
-            },
-            { 
-                name: "Depression", 
-                advice: "Engage in positive affirmations and guided meditation.",
-                meditation: "Listen to calming music and repeat positive affirmations like 'I am strong and resilient'."
-            }
-        ];
+    async function fetchMeditationAdvice() {
+        const response = await fetch('/get_meditation_advice');
+        const diseases = await response.json();
 
         const diseaseDropdown = document.getElementById("disease");
         const adviceContainer = document.getElementById("advice-container");
@@ -67,6 +48,9 @@
                 adviceContainer.innerHTML = "<p>Select a disease to get advice.</p>";
             }
         });
-    </script>
+    }
+
+    fetchMeditationAdvice();
+</script>
 </body>
 </html>
