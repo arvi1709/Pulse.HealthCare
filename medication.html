@@ -46,4 +46,71 @@
             { 
                 name: "Asthma", 
                 advice: "Avoid triggers and use inhalers as prescribed.",
-                medications: ["Albuterol", "Fluticasone", "Budesoni
+                medications: ["Albuterol", "Fluticasone", "Budesonide"]
+            }
+        ];
+        async function fetchMedications() {
+    const response = await fetch('/get_medications');
+    const diseases = await response.json();
+
+    const select = document.getElementById("diseaseSelect");
+    diseases.forEach(disease => {
+        const option = document.createElement("option");
+        option.value = disease.name;
+        option.textContent = disease.name;
+        select.appendChild(option);
+    });
+
+    document.getElementById("diseaseSelect").addEventListener("change", function () {
+        const selectedDisease = this.value;
+        const disease = diseases.find(d => d.name === selectedDisease);
+        
+        if (disease) {
+            document.getElementById("advice").textContent = disease.advice;
+            const medList = document.getElementById("medicationList");
+            medList.innerHTML = "";
+
+            disease.medications.forEach(med => {
+                const li = document.createElement("li");
+                li.textContent = med;
+                medList.appendChild(li);
+            });
+        }
+    });
+}
+
+fetchMedications();
+        function populateDiseases() {
+            const select = document.getElementById("diseaseSelect");
+            diseases.forEach(disease => {
+                const option = document.createElement("option");
+                option.value = disease.name;
+                option.textContent = disease.name;
+                select.appendChild(option);
+            });
+        }
+
+        function showMedication() {
+            const selectedDisease = document.getElementById("diseaseSelect").value;
+            const disease = diseases.find(d => d.name === selectedDisease);
+
+            if (disease) {
+                document.getElementById("advice").textContent = disease.advice;
+                const medList = document.getElementById("medicationList");
+                medList.innerHTML = "";
+
+                disease.medications.forEach(med => {
+                    const li = document.createElement("li");
+                    li.textContent = med;
+                    medList.appendChild(li);
+                });
+            } else {
+                document.getElementById("advice").textContent = "Select a disease to see advice.";
+                document.getElementById("medicationList").innerHTML = "";
+            }
+        }
+
+        populateDiseases();
+    </script>
+</body>
+</html>
