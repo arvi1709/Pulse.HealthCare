@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Health Profile</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>My Health Profile</h1>
+        <a href="index.html">Home</a>
+    </header>
+
+    <section class="profile-info">
+        <h2>Personal Information</h2>
+        <p><strong>Name:</strong> John Doe</p>
+        <p><strong>Age:</strong> 65</p>
+        <p><strong>Blood Group:</strong> O+</p>
+        <p><strong>Chronic Conditions:</strong> Diabetes, Hypertension</p>
+    </section>
+
+    <section class="medical-data">
+        <h2>Recent Health Records</h2>
+        <ul>
+            <li>Blood Pressure: 130/85 mmHg</li>
+            <li>Blood Sugar Level: 110 mg/dL</li>
+            <li>Last Doctor Visit: January 25, 2025</li>
+            <li>Medications: Metformin, Lisinopril</li>
+        </ul>
+    </section>
+
+    <section class="emergency-info">
+        <h2>Emergency Contact</h2>
+        <p><strong>Primary Contact:</strong> Jane Doe (+1234567890)</p>
+        <p><strong>Doctor Contact:</strong> Dr. Smith (+9876543210)</p>
+    </section>
+
+    <script>
+        async function fetchProfileData() {
+            const response = await fetch('/get_profile'); // Fetch data from backend
+            const data = await response.json();
+
+            document.querySelector('.profile-info').innerHTML = `
+                <h2>Personal Information</h2>
+                <p><strong>Name:</strong> ${data.name}</p>
+                <p><strong>Age:</strong> ${data.age}</p>
+                <p><strong>Blood Group:</strong> ${data.blood_group}</p>
+                <p><strong>Chronic Conditions:</strong> ${data.conditions}</p>
+            `;
+
+            document.querySelector('.medical-data ul').innerHTML = `
+                <li>Blood Pressure: ${data.blood_pressure}</li>
+                <li>Blood Sugar Level: ${data.blood_sugar}</li>
+                <li>Last Doctor Visit: ${data.last_visit}</li>
+                <li>Medications: ${data.medications}</li>
+            `;
+
+            document.querySelector('.emergency-info').innerHTML = `
+                <h2>Emergency Contact</h2>
+                <p><strong>Primary Contact:</strong> ${data.emergency_contact}</p>
+                <p><strong>Doctor Contact:</strong> ${data.doctor_contact}</p>
+            `;
+        }
+
+        fetchProfileData();
+    </script>
+
+</body>
+</html>
