@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOS Emergency</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>SOS Emergency</h1>
+        <a href="index.html">Home</a>
+    </header>
+
+    <section class="emergency-info">
+        <h2>Emergency Contact Information</h2>
+        <p><strong>Emergency Number:</strong> 911 (or local emergency services)</p>
+        <p><strong>Nearest Hospital:</strong> XYZ Medical Center</p>
+        <p><strong>Doctor Contact:</strong> Dr. John Doe (+1234567890)</p>
+    </section>
+
+    <section class="sos-actions">
+        <button onclick="callEmergency()">Call Emergency</button>
+        <button onclick="sendAlert()">Send Alert to Family</button>
+    </section>
+
+    <script>
+        function callEmergency() {
+            alert("Calling emergency services...");
+            window.location.href = "tel:911"; // Change to local emergency number
+        }
+
+        async function sendAlert() {
+            const response = await fetch("/send_alert",{
+                method: "POST",
+            });
+            const data = await response.json();
+            alert(data.message);
+        }
+
+    </script>
+
+</body>
+</html>

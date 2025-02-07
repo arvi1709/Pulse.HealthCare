@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Healthcare Voice Assistant</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    .search-container {
+      width: 50%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 2px solid #ccc;
+      padding: 10px;
+      border-radius: 25px;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .mic-button {
+      background-color: #ff5722;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .response-container {
+      margin-top: 20px;
+      width: 50%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: #f8f8f8;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container header-container">
+      <div class="logo">
+        <img src="app-icon.png" alt="App Icon" class="app-icon" />
+      </div>
+      <h1>PULSE : Healthcare Voice Assistant</h1>
+      <p>Your Health Assistant is here to help</p>
+      <div class="header-buttons">
+        <button id="startVoice">
+          <img src="mic.png" alt="Mic" class="mic-icon" />
+        </button>
+      </div>
+
+      <div class="auth-buttons">
+        <button id="loginBtn">Login</button>
+        <button id="signupBtn">Sign Up</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Ask me anything...">
+    <button class="mic-button" onclick="startVoiceInput()">🎤</button>
+    <button onclick="askAI()">Search</button>
+  </div>
+
+  <div id="response" class="response-container"></div>
+
+  <script>
+    async function askAI() {
+      const query = document.getElementById('searchInput').value;
+      if (!query) return;
+
+      const responseDiv = document.getElementById('response');
+      responseDiv.innerHTML = "Thinking...";
+
+      const apiKey = "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"; // Replace with your API key
+      const endpoint = "https://api.groq.com/openai/v1/chat/completions";
+
+      const data = {
+        model: "llama3-8b-8192",
+        messages: [{ role: "user", content: query }]
+      };
+
+      try {
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        const aiResponse = result.choices[0].message.content;
+        responseDiv.innerHTML = aiResponse;
+
+        // Convert AI text response to speech
+        speakText(aiResponse);
+      } catch (error) {
+        responseDiv.innerHTML = "Error fetching response!";
+        console.error("Error:", error);
+      }
+    }
+
+    // 🎤 Voice Input Function
+    function startVoiceInput() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "en-US";
+
+      recognition.onstart = function () {
+        document.getElementById("searchInput").placeholder = "Listening...";
+      };
+
+      recognition.onresult = function (event) {
+        const spokenText = event.results[0][0].transcript;
+        document.getElementById("searchInput").value = spokenText;
+        askAI(); // Automatically send the voice input as a query
+      };
+
+      recognition.onerror = function (event) {
+        console.error("Speech recognition error:", event.error);
+      };
+
+      recognition.start();
+    }
+
+    // 🔊 Text-to-Speech Function
+    function speakText(text) {
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.rate = 1.0;
+      synth.speak(utterance);
+    }
+  </script>
+
+  <main class="container">
+    <!-- Greeting Section: Visible after login -->
+    <section id="greetingSection" class="greeting-section" style="display: none;">
+      <h2>Welcome, <span id="usernameDisplay"></span>!</h2>
+      <button id="logoutBtn">Logout</button>
+    </section>
+
+    <!-- Features Section -->
+    <section class="feature">
+      <h2>Healthcare Features</h2>
+      <div class="feature-list">
+        <div class="feature-item">
+          <button id="medicationReminder">Medication Reminders</button>
+        </div>
+        <div class="feature-item">
+          <button id="symptomChecker">Symptom Checker</button>
+        </div>
+        <div class="feature-item">
+          <button id="appointmentScheduler">Appointment Scheduler</button>
+        </div>
+        <div class="feature-item">
+          <button id="checkProfile">Check My Profile</button>
+        </div>
+        <div class="feature-item">
+          <a href="sos.html">
+            <button id="sosCall">SOS Call</button>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Response Section -->
+    <section class="response">
+      <h3>Assistant Response</h3>
+      <p id="response">
+        Click the "Mic" icon and speak your command.
+      </p>
+    </section>
+  </main>
+
+  <!-- Feature Modal Structure -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" id="modalCloseBtn">&times;</span>
+      <div id="modal-body">
+        <!-- Feature content is injected here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal Structure -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" id="loginModalCloseBtn">&times;</span>
+      <div id="login-modal-body">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <div class="form-control">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required />
+          </div>
+          <div class="form-control">
+            <label for="password">Password:</label>
+            <input type="password" id="password" required />
+          </div>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Healthcare Voice Assistant. All rights reserved.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
