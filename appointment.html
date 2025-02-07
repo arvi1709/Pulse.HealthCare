@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Scheduler</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Appointment Scheduler</h1>
+        <a href="index.html">Home</a>
+    </header>
+
+    <section class="hospital-list">
+        <h2>Select a Hospital</h2>
+        <ul id="hospital-list">
+            <!-- Hospitals will be dynamically loaded here -->
+        </ul>
+    </section>
+
+    <section class="appointment-form">
+        <h2>Book an Appointment</h2>
+        <form id="appointmentForm">
+            <label for="hospital">Hospital:</label>
+            <select id="hospital" required>
+                <option value="">Select Hospital</option>
+            </select>
+
+            <label for="date">Date:</label>
+            <input type="date" id="date" required>
+
+            <label for="time">Time:</label>
+            <input type="time" id="time" required>
+
+            <button type="submit">Book Appointment</button>
+        </form>
+    </section>
+
+    <script>
+        async function fetchHospitals() {
+            const response = await fetch('/get_hospitals'); // Fetch hospital data from backend
+            const hospitals = await response.json();
+
+            const hospitalList = document.getElementById('hospital-list');
+            const hospitalSelect = document.getElementById('hospital');
+
+            hospitals.forEach(hospital => {
+                // Add hospital names to the list
+                const listItem = document.createElement('li');
+                listItem.innerHTML = <strong>${hospital.name}</strong> - Contact: ${hospital.contact};
+                hospitalList.appendChild(listItem);
+
+                // Add hospital names to the dropdown
+                const option = document.createElement('option');
+                option.value = hospital.name;
+                option.textContent = hospital.name;
+                hospitalSelect.appendChild(option);
+            });
+        }
+
+        document.getElementById("appointmentForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const selectedHospital = document.getElementById("hospital").value;
+            const selectedDate = document.getElementById("date").value;
+            const selectedTime = document.getElementById("time").value;
+
+            alert(Appointment booked at ${selectedHospital} on ${selectedDate} at ${selectedTime});
+        });
+
+        fetchHospitals();
+    </script>
+</body>
+</html>
