@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medication Reminder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Medication Reminder</h1>
+        <a href="index.html">Home</a>
+    </header>
+
+    <section class="medication-list">
+        <h2>Select a Disease</h2>
+        <select id="diseaseSelect">
+            <option value="">Choose a disease</option>
+        </select>
+        <button onclick="showMedication()">Get Advice</button>
+    </section>
+
+    <section class="medication-info">
+        <h2>Advice & Medication</h2>
+        <p id="advice"></p>
+        <ul id="medicationList"></ul>
+    </section>
+
+    <script>
+        const diseases = [
+            { 
+                name: "Diabetes", 
+                advice: "Maintain a healthy diet and regular exercise.",
+                medications: ["Metformin", "Insulin", "Glipizide"]
+            },
+            { 
+                name: "Hypertension", 
+                advice: "Reduce salt intake, exercise, and manage stress.",
+                medications: ["Lisinopril", "Amlodipine", "Losartan"]
+            },
+            { 
+                name: "Flu", 
+                advice: "Drink fluids, rest, and take antiviral medications if needed.",
+                medications: ["Oseltamivir", "Zanamivir", "Acetaminophen"]
+            },
+            { 
+                name: "Asthma", 
+                advice: "Avoid triggers and use inhalers as prescribed.",
+                medications: ["Albuterol", "Fluticasone", "Budesoni
