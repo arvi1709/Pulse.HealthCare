@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meditation Advisor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Meditation Advisor</h1>
+        <a href="index.html">Home</a>
+    </header>
+
+    <section class="meditation-section">
+        <h2>Select a Disease</h2>
+        <select id="disease">
+            <option value="">Select a Disease</option>
+        </select>
+
+        <h3>Advice & Meditation Techniques</h3>
+        <div id="advice-container">
+            <p>Select a disease to get advice.</p>
+        </div>
+    </section>
+
+    <script>
+        const diseases = [
+            { 
+                name: "Anxiety", 
+                advice: "Practice deep breathing exercises and mindfulness. Try meditation for 10 minutes daily.",
+                meditation: "Sit in a quiet place, close your eyes, and focus on your breath. Inhale for 4 seconds, hold for 4 seconds, exhale for 4 seconds."
+            },
+            { 
+                name: "High Blood Pressure", 
+                advice: "Avoid stress and practice yoga or guided meditation.",
+                meditation: "Try progressive muscle relaxation. Slowly tense and relax each muscle group in your body."
+            },
+            { 
+                name: "Insomnia", 
+                advice: "Follow a relaxing bedtime routine. Avoid screens before sleep.",
+                meditation: "Lie down, close your eyes, and visualize a peaceful place like a beach or forest."
+            },
+            { 
+                name: "Depression", 
+                advice: "Engage in positive affirmations and guided meditation.",
+                meditation: "Listen to calming music and repeat positive affirmations like 'I am strong and resilient'."
+            }
+        ];
+
+        const diseaseDropdown = document.getElementById("disease");
+        const adviceContainer = document.getElementById("advice-container");
+
+        diseases.forEach(disease => {
+            const option = document.createElement("option");
+            option.value = disease.name;
+            option.textContent = disease.name;
+            diseaseDropdown.appendChild(option);
+        });
+
+        diseaseDropdown.addEventListener("change", function() {
+            const selectedDisease = diseases.find(d => d.name === this.value);
+            if (selectedDisease) {
+                adviceContainer.innerHTML = `<p><strong>Advice:</strong> ${selectedDisease.advice}</p>
+                                             <p><strong>Meditation:</strong> ${selectedDisease.meditation}</p>`;
+            } else {
+                adviceContainer.innerHTML = "<p>Select a disease to get advice.</p>";
+            }
+        });
+    </script>
+</body>
+</html>
